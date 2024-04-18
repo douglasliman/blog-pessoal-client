@@ -6,7 +6,7 @@ function Navbar() {
   const navigate = useNavigate();
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { usuario, handleLogout } = useContext(AuthContext);
+  const { handleLogout } = useContext(AuthContext);
 
   function logout() {
     handleLogout();
