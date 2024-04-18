@@ -1,4 +1,3 @@
-
 import ListaTemas from '../../components/temas/listaTemas/ListaTemas';
 
 function Home() {
