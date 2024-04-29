@@ -1,14 +1,13 @@
-import  { ChangeEvent, useContext, useEffect, useState } from 'react';
+import { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AuthContext } from '../../../contexts/AuthContext';
 import Tema from '../../../models/Tema';
 import { atualizar, buscar, cadastrar } from '../../../services/Service';
-import { toastAlerta } from '../../../utils/toastAlerta';
 
 function FormularioTema() {
   const [tema, setTema] = useState<Tema>({} as Tema);
 
-  const navigate = useNavigate();
+  let navigate = useNavigate();
 
   const { id } = useParams<{ id: string }>();
 
@@ -49,15 +48,15 @@ function FormularioTema() {
           }
         })
 
-        toastAlerta('Tema atualizado com sucesso', 'sucesso')
+        alert('Tema atualizado com sucesso')
         retornar()
 
       } catch (error: any) {
         if (error.toString().includes('403')) {
-          toastAlerta('O token expirou, favor logar novamente', 'info')
+          alert('O token expirou, favor logar novamente')
           handleLogout()
         } else {
-          toastAlerta('Erro ao atualizar o Tema', 'erro')
+          alert('Erro ao atualizar o Tema')
         }
 
       }
@@ -70,14 +69,14 @@ function FormularioTema() {
           }
         })
 
-        toastAlerta('Tema cadastrado com sucesso', 'sucesso')
+        alert('Tema cadastrado com sucesso')
 
       } catch (error: any) {
         if (error.toString().includes('403')) {
-          toastAlerta('O token expirou, favor logar novamente', 'info')
+          alert('O token expirou, favor logar novamente')
           handleLogout()
         } else {
-          toastAlerta('Erro ao cadastrado o Tema', 'erro')
+          alert('Erro ao cadastrado o Tema')
         }
       }
     }
@@ -91,7 +90,7 @@ function FormularioTema() {
 
   useEffect(() => {
     if (token === '') {
-      toastAlerta('Você precisa estar logado', 'info');
+      alert('Você precisa estar logado');
       navigate('/login');
     }
   }, [token]);

@@ -4,7 +4,7 @@ import { AuthContext } from '../../contexts/AuthContext'
 
 
 function Navbar() {
-  const  navigate = useNavigate()
+  let navigate = useNavigate()
 
     const { usuario, handleLogout } = useContext(AuthContext)
 

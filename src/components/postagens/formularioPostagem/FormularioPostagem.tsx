@@ -7,7 +7,7 @@ import { buscar, atualizar, cadastrar } from '../../../services/Service';
 
 
 function FormularioPostagem() {
-  const  navigate = useNavigate();
+  let navigate = useNavigate();
 
   const { id } = useParams<{ id: string }>();
 
@@ -134,7 +134,6 @@ function FormularioPostagem() {
   }
 
   const carregandoTema = tema.descricao === '';
-
   return (
     <div className="container flex flex-col mx-auto items-center">
       <h1 className="text-4xl text-center my-8">{id !== undefined ? 'Editar Postagem' : 'Cadastrar Postagem'}</h1>
