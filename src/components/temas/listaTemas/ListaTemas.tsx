@@ -1,11 +1,10 @@
-import  { useContext, useEffect, useState } from 'react';
-import { DNA } from 'react-loader-spinner';
+import { useContext, useEffect, useState } from 'react';
+import { Puff } from 'react-loader-spinner';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../contexts/AuthContext';
 import Tema from '../../../models/Tema';
 import { buscar } from '../../../services/Service';
 import CardTemas from '../cardTemas/CardTemas';
-import { toastAlerta } from '../../../utils/toastAlerta';
 
 function ListaTemas() {
   const [temas, setTemas] = useState<Tema[]>([]);
@@ -17,12 +16,13 @@ function ListaTemas() {
 
   async function buscarTemas() {
     try {
-      await buscar('/temas', setTemas, {
+      await buscar('/tema', (data: unknown) => setTemas(data as Tema[]), {
         headers: { Authorization: token },
       });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-      if(error.toString().includes('403')) {
-        toastAlerta('O token expirou, favor logar novamente', 'info')
+      if (error.toString().includes('403')) {
+        alert('O token expirou, favor logar novamente')
         handleLogout()
       }
     }
@@ -30,8 +30,8 @@ function ListaTemas() {
 
   useEffect(() => {
     if (token === '') {
-      toastAlerta('Você precisa estar logado', 'info');
-      navigate('/login');
+      alert('Você precisa estar logado');
+      navigate('/logar');
     }
   }, [token]);
 
@@ -41,7 +41,7 @@ function ListaTemas() {
   return (
     <>
       {temas.length === 0 && (
-        <DNA
+        <Puff
           visible={true}
           height="200"
           width="200"

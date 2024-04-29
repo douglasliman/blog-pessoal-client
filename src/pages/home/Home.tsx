@@ -1,34 +1,19 @@
-import ListaPostagens from '../../components/postagem/listarPostagem/ListaPostagens';
-import ModalPostagem from '../../components/postagem/modalPostagem/ModalPostagem';
-import './Home.css';
-
-
-
+import ListaTemas from '../../components/temas/listaTemas/ListaTemas';
 
 function Home() {
-    return (
-        <>
-        <div className="bg-indigo-900 flex justify-center">
-          <div className='container grid grid-cols-2 text-white'>
-            <div className="flex flex-col gap-4 items-center justify-center py-4">
-              <h2 className='text-5xl font-bold'>Seja bem vinde!</h2>
-              <p className='text-xl'>Expresse aqui seus pensamentos e opniões</p>
-  
-              <div className="flex justify-around gap-4">
-              <ModalPostagem />
-              <button className='rounded bg-white text-blue-800 py-2 px-4'>Ver postagens</button>
-            </div>
-            </div>
-  
-            <div className="flex justify-center ">
-              <img src={homeLogo} alt="" className='w-2/3' />
+ 
+
+  return (
+    <div className='flex justify-center items-center'>
+      <div>
+        {/* <h2 className="text-slate-900 text-5xl  my-4">Logar</h2>
+        <h2 className="text-slate-900 text-4xl ">Ola user : {nome}</h2> */}
+        <ListaTemas/>
       
-            </div>
-          </div>
-        </div>
-        <ListaPostagens />
-      </>
-    );
+      </div>
+
+    </div>
+  );
 }
 
 export default Home;

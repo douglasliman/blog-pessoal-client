@@ -1,9 +1,8 @@
-import  { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
 import { AuthContext } from '../../../contexts/AuthContext'
 import Tema from '../../../models/Tema'
 import { buscar, deletar } from '../../../services/Service'
-import { toastAlerta } from '../../../utils/toastAlerta'
 
 function DeletarTema() {
     const [tema, setTema] = useState<Tema>({} as Tema)
@@ -17,14 +16,15 @@ function DeletarTema() {
 
     async function buscarPorId(id: string) {
         try {
-            await buscar(`/temas/${id}`, setTema, {
+            await buscar(`/tema/${id}`, (data: unknown) => setTema(data as Tema), {
                 headers: {
-                    'Authorization': token
+                  Authorization: token,
                 }
             })
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             if (error.toString().includes('403')) {
-                toastAlerta('O token expirou, favor logar novamente', 'info')
+                alert('O token expirou, favor logar novamente')
                 handleLogout()
             }
         }
@@ -32,10 +32,10 @@ function DeletarTema() {
 
     useEffect(() => {
         if (token === '') {
-            toastAlerta('Você precisa estar logado', 'info')
-            navigate('/login')
+            alert('Você precisa estar logado')
+            navigate('/logar')
         }
-    }, [token])
+    }, [navigate, token])
 
     useEffect(() => {
         if (id !== undefined) {
@@ -44,21 +44,21 @@ function DeletarTema() {
     }, [id])
 
     function retornar() {
-        navigate("/temas")
+        navigate("/tema")
     }
 
     async function deletarTema() {
         try {
-            await deletar(`/temas/${id}`, {
+            await deletar(`/tema/${id}`, {
                 headers: {
                     'Authorization': token
                 }
             })
 
-            toastAlerta('Tema apagado com sucesso', 'sucesso')
+            alert('Tema apagado com sucesso')
 
         } catch (error) {
-            toastAlerta('Erro ao apagar o Tema', 'erro')
+            alert('Erro ao apagar o Tema')
         }
 
         retornar()
