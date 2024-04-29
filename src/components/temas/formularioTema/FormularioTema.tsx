@@ -1,8 +1,9 @@
-import { ChangeEvent, useContext, useEffect, useState,SetStateAction } from 'react';
+import  { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AuthContext } from '../../../contexts/AuthContext';
 import Tema from '../../../models/Tema';
 import { atualizar, buscar, cadastrar } from '../../../services/Service';
+import { toastAlerta } from '../../../utils/toastAlerta';
 
 function FormularioTema() {
   const [tema, setTema] = useState<Tema>({} as Tema);
@@ -15,13 +16,12 @@ function FormularioTema() {
   const token = usuario.token;
 
   async function buscarPorId(id: string) {
-    await buscar(`/temas/${id}`, (data: unknown) => setTema(data as Tema), {
+    await buscar(`/temas/${id}`, setTema, {
       headers: {
         Authorization: token,
       },
     });
   }
-
 
   useEffect(() => {
     if (id !== undefined) {
@@ -42,49 +42,42 @@ function FormularioTema() {
     e.preventDefault()
 
     if (id !== undefined) {
-
-
       try {
-        await atualizar(`/tema`, tema, (data: unknown) => setTema(data as SetStateAction<Tema>), {
+        await atualizar(`/temas`, tema, setTema, {
           headers: {
             'Authorization': token
           }
-        });
+        })
 
-        alert('Tema atualizado com sucesso');
-        retornar();
+        toastAlerta('Tema atualizado com sucesso', 'sucesso')
+        retornar()
 
-
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error: any) {
         if (error.toString().includes('403')) {
-          alert('O token expirou, favor logar novamente')
+          toastAlerta('O token expirou, favor logar novamente', 'info')
           handleLogout()
         } else {
-          alert('Erro ao atualizar o Tema')
+          toastAlerta('Erro ao atualizar o Tema', 'erro')
         }
 
       }
 
     } else {
       try {
-        await cadastrar(`/tema`, tema, (data: unknown) => setTema(data as Tema), {
+        await cadastrar(`/temas`, tema, setTema, {
           headers: {
             'Authorization': token
           }
-        });
+        })
 
-        alert('Tema cadastrado com sucesso');
+        toastAlerta('Tema cadastrado com sucesso', 'sucesso')
 
-
-
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error: any) {
         if (error.toString().includes('403')) {
-          alert('O token expirou, favor logar novamente')
+          toastAlerta('O token expirou, favor logar novamente', 'info')
           handleLogout()
         } else {
-          alert('Erro ao cadastrado o Tema')
+          toastAlerta('Erro ao cadastrado o Tema', 'erro')
         }
       }
     }
@@ -93,13 +86,13 @@ function FormularioTema() {
   }
 
   function retornar() {
-    navigate("/tema")
+    navigate("/temas")
   }
 
   useEffect(() => {
     if (token === '') {
-      alert('Você precisa estar logado');
-      navigate('/logar');
+      toastAlerta('Você precisa estar logado', 'info');
+      navigate('/login');
     }
   }, [token]);
 
